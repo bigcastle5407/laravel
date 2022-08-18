@@ -16,7 +16,9 @@ class ntc01Controller extends Controller
             from notice
         ";
         $notice = DB::select($sql);
-        return view("/notice/ntc01",['notice' => $notice] );
+        return view("/notice/ntc01");
+        
+        // return response()->json($notice);
     }
 
     //검색
@@ -58,13 +60,32 @@ class ntc01Controller extends Controller
     }
 
     //등록페이지 화면
-    public function register()
+    public function register_view()
     {
         return view("/notice/register");
     }
 
+    //등록페이지
+    public function register(Request $request)
+    {
+        $r = $request->all();
+
+        $writer = $request->input('writer');
+        $title = $request->input('title');
+        $content = $request->input('content');
+
+        $sql = "
+            insert into notice(idx, title, content, writer,rt)
+            values(null,'$title', '$content', '$writer',now())
+        ";
+        
+        $result = DB::insert($sql);
+
+        return redirect("/");
+    }
+
     //수정페이지 화면
-    public function modify(Request $request)
+    public function modify_view(Request $request)
     {
         $idx = $request->input('idx', '');
         $sql2 = "
@@ -77,4 +98,35 @@ class ntc01Controller extends Controller
         $values = ['result' => $result2];
         return view("/notice/modify",$values);
     }
+
+
+    //수정페이지
+    public function modify(Request $request)
+        {
+            $r = $request->all();
+
+            $writer = $request->input('writer');
+            $title = $request->input('title');
+            $content = $request->input('content');
+            $idx = $request->input('idx');
+
+            $sql = "
+                update notice
+                set writer='$writer', title='$title', content='$content', ut=now()
+                where idx = $idx
+            ";
+            
+            $result = DB::update($sql);
+
+            return redirect("/");
+        }
+
+
+    //삭제페이지
+    public function delete()
+    {
+
+    }
+    
+    
 }

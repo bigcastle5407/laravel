@@ -14,6 +14,11 @@
    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css"/>
    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css"/>
+   <style>
+    .ag-header-cell-label {
+	justify-content: center;
+    }
+   </style>
 </head>
 <body style="width:85%;margin:auto; margin-top:20px;">
     <header style="background-color:gray;width:auto;height:70px;">
@@ -27,57 +32,27 @@
             <input type="button" class="btn btn-success" name="reg_btn" onClick="location.href='/register'" value="등록">
             <input type="submit" class="btn btn-warning" name="sel_btn" value="조회">
         </div>
-
             <fieldset style="text-align:center;border-bottom:1px solid #e5e5e5; padding-bottom:20px;">
                 <legend class="w-auto">검색</legend>
                 작성일시 : <input type="text" class="form-control" id="datepicker" name="write_time" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
                 제목 : <input type="text" class="form-control" name="title" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
                 작성자 : <input type="text" class="form-control" name="writer" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
             </fieldset>            
-               
         <br><br><br>
-
-
-        
     </form>
-
-    <!-- <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th style="text-align:center;width:100px;">번호</th>
-                <th style="text-align:center;width:700px;">제목</th>
-                <th style="text-align:center;">작성자</th>
-                <th style="text-align:center;">등록일시</th>
-                <th style="text-align:center;">수정일시</th>
-            </tr>
-        </thead>
-        <tbody>
-           @foreach($notice as $result)
-            <tr>
-                <td style="text-align:center;">{{$result->idx}}</td>
-                <td style="text-align:center;"><a href="/modify?idx='{{$result->idx}}'">{{$result->title}}</a></td>
-                <td style="text-align:center;">{{$result->writer}}</td>
-                <td style="text-align:center;">{{$result->rt}}</td>
-                <td style="text-align:center;">{{$result->ut}}</td>
-            </tr>
-            @endforeach                
-
-        </tbody>
-    </table> -->
-
-
-   
-   <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width:auto;"></div>
-   <script type="text/javascript">
+    
+    <!-- ag-grid -->
+    <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width:auto;text-align:center"></div>
+    <script type="text/javascript">
        const gridOptions = {
 
-         columnDefs: [
-           { field: "번호" },
-           { field: "제목" },
-           { field: "작성자" },
-           { field: "등록일시" },
-           { field: "수정일시" },
-         ],
+        columnDefs: [
+           { headerName:"번호", field: "idx", width:100},
+           { headerName:"제목", field: "title", width:500},
+           { headerName:"작성자",field: "writer" },
+           { headerName:"등록일시",field: "rt" },
+           { headerName:"수정일시",field: "ut" },
+        ],
 
          defaultColDef: {sortable: true, filter: true},
 
@@ -86,27 +61,27 @@
 
          onCellClicked: params => {
            console.log('cell was clicked', params)
-         }
+        },
+         
+        onGridReady: function (event) {
+
+        event.api.sizeColumnsToFit();
+        }
        };
+       
+    //    columnDefs.cellRenderer = function(params) {
+    //         return '<span title="the tooltip">'+params.value+'</span>';
+    //     }
 
        const eGridDiv = document.getElementById("myGrid");
        new agGrid.Grid(eGridDiv, gridOptions);
 
-       fetch("https://www.ag-grid.com/example-assets/row-data.json")
+       fetch("http://127.0.0.1:8000/json")
        .then(response => response.json())
        .then(data => {
          gridOptions.api.setRowData(data);
        });
    </script>
-
-
-
-
-
-
-
-
-
 
 <!-- jquery calendar -->
 <script>

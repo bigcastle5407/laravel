@@ -9,10 +9,7 @@
     class regController extends Controller
     {
         
-        public function delete()
-        {
-
-        }
+        
     
     
     
