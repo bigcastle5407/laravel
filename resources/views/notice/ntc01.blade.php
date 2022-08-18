@@ -26,15 +26,15 @@
     </header>
     
     <h1>자유게시판</h1>
-    <form action="/info" method="GET">
-       @csrf
+    <form action="/search" method="GET">
+       <!-- @csrf -->
         <div style="text-align:right;">
             <input type="button" class="btn btn-success" name="reg_btn" onClick="location.href='/register'" value="등록">
             <input type="submit" class="btn btn-warning" name="sel_btn" value="조회">
         </div>
             <fieldset style="text-align:center;border-bottom:1px solid #e5e5e5; padding-bottom:20px;">
                 <legend class="w-auto">검색</legend>
-                작성일시 : <input type="text" class="form-control" id="datepicker" name="write_time" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
+                작성일시 : <input type="text" class="form-control" id="datepicker" name="rt" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
                 제목 : <input type="text" class="form-control" name="title" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
                 작성자 : <input type="text" class="form-control" name="writer" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
             </fieldset>            
@@ -42,13 +42,28 @@
     </form>
     
     <!-- ag-grid -->
-    <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width:auto;text-align:center"></div>
-    <script type="text/javascript">
-       const gridOptions = {
+    <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width:auto;text-align:center;"></div>
 
+    @foreach($search as $k => $v)
+        <div>
+            <p>
+                {{$k}}의 값은 {{$v}}
+            </p>
+        </div>
+    @endforeach
+
+    <script type="text/javascript">
+    const gridOptions = {
         columnDefs: [
            { headerName:"번호", field: "idx", width:100},
-           { headerName:"제목", field: "title", width:500},
+           { headerName:"제목", field: "title", width:500,
+           cellRenderer: function(params) {
+            
+            let modify = `<a href= /modify?idx=${params.data.idx}>${params.value}</a>`;
+            return modify;
+        }
+        
+    },
            { headerName:"작성자",field: "writer" },
            { headerName:"등록일시",field: "rt" },
            { headerName:"수정일시",field: "ut" },
@@ -60,7 +75,8 @@
          animateRows: true,
 
          onCellClicked: params => {
-           console.log('cell was clicked', params)
+           console.log(params.data.idx);
+           
         },
          
         onGridReady: function (event) {
@@ -68,11 +84,6 @@
         event.api.sizeColumnsToFit();
         }
        };
-       
-    //    columnDefs.cellRenderer = function(params) {
-    //         return '<span title="the tooltip">'+params.value+'</span>';
-    //     }
-
        const eGridDiv = document.getElementById("myGrid");
        new agGrid.Grid(eGridDiv, gridOptions);
 

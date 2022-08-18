@@ -18,24 +18,11 @@ use Illuminate\Support\Facades\DB;
 // 메인
 Route::get('/', "notice\\ntc01Controller@index");
 
-//api
-Route::get('/json',function(){
-    
-    $sql = "
-        select *
-        from notice
-        ";
-    $notice = DB::select($sql);
-    
-    // $arr = response()->json($notice);
-    $json = json_encode($notice, JSON_UNESCAPED_UNICODE);
+//메인 json
+Route::get('/json', "notice\\ntc01Controller@json");
 
-    return $json ;
-
-});
-
-// 검색
-Route::get('/info','notice\\ntc01Controller@search');
+//검색
+Route::get('/search', "notice\\ntc01Controller@search");
 
 // 등록페이지 이동
 Route::get('/register','notice\\ntc01Controller@register_view');

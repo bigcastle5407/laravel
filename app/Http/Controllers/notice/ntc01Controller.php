@@ -17,47 +17,49 @@ class ntc01Controller extends Controller
         ";
         $notice = DB::select($sql);
         return view("/notice/ntc01");
-        
-        // return response()->json($notice);
     }
 
-    //검색
+    public function json(Request $request)
+    {
+        $sql = "
+            select *
+            from notice
+            ";
+        $notice = DB::select($sql);
+        
+        $json = json_encode($notice, JSON_UNESCAPED_UNICODE);
+    
+        return $json ;
+    }
+
+    // 검색
     public function search(Request $request)
     {
-        // $r = $request->all();
-        // $write_time = $request->input('write_time');
-        // $title = $request->input('title');
-        // $writer = $request->input('writer');
+        $rt = $request->input('rt');
+        $title = $request->input('title');
+        $writer = $request->input('writer');
 
-        // $where = "";
+        $where = "";
 
-        // if($writer != '') {
-        //     $where .= "and write_time = '$write_time'";
-        //     $where .= " and  title = '$title'";
-        //     $where .= " and writer = '$writer'";
-        // }
-        
-        // $sql = "
-        //     select *
-        //     from notice
-        //     where 1=1 $where
-        // ";
-        // $result = DB::select($sql);
-        
+        if($writer != '') {
+            $where .= "and rt like '%$rt%'";
+            $where .= "and title like '%$title%'";
+            $where .= "and writer like'%$writer%'";
+        }
+    
+        $sql3 = "
+            select * 
+            from notice 
+            where 1=1 $where order by idx asc
+        ";
+    
+        $result = DB::select($sql3);
+        $json2 = json_encode($result, JSON_UNESCAPED_UNICODE);
+        $search = ['json2' => $json2];
 
-        // return view("/notice/ntc01", $result);
-
-        // return response()->json([
-        //     'code' => 200,
-        //     'head' => [
-        //         'total' => 5,
-        //         'page' => 1,
-        //     ],
-        //     'body' => $result,
-        // ]);
-
-        // return response()->json(['code' => 200, 'msg' => '저장이 완료되었습니다.']);
+        return view("/notice/ntc01", $search);
     }
+
 
     //등록페이지 화면
     public function register_view()
