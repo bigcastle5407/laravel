@@ -26,17 +26,17 @@
     </header>
     
     <h1>자유게시판</h1>
-    <form action="/search" method="GET">
+    <form action="" method="GET">
        <!-- @csrf -->
         <div style="text-align:right;">
             <input type="button" class="btn btn-success" name="reg_btn" onClick="location.href='/register'" value="등록">
-            <input type="submit" class="btn btn-warning" name="sel_btn" value="조회">
+            <input type="button" class="btn btn-warning" name="sel_btn" onclick="select_table();" value="조회">
         </div>
             <fieldset style="text-align:center;border-bottom:1px solid #e5e5e5; padding-bottom:20px;">
                 <legend class="w-auto">검색</legend>
                 작성일시 : <input type="text" class="form-control" id="datepicker" name="rt" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
-                제목 : <input type="text" class="form-control" name="title" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
-                작성자 : <input type="text" class="form-control" name="writer" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
+                제목 : <input type="text" class="form-control" name="title" id="title" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
+                작성자 : <input type="text" class="form-control" name="writer" id="writer" style="width:auto;display:inline-block;">&nbsp;&nbsp;&nbsp;
             </fieldset>            
         <br><br><br>
     </form>
@@ -44,54 +44,75 @@
     <!-- ag-grid -->
     <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width:auto;text-align:center;"></div>
 
-    @foreach($search as $k => $v)
-        <div>
-            <p>
-                {{$k}}의 값은 {{$v}}
-            </p>
-        </div>
-    @endforeach
+    
 
     <script type="text/javascript">
-    const gridOptions = {
-        columnDefs: [
-           { headerName:"번호", field: "idx", width:100},
-           { headerName:"제목", field: "title", width:500,
-           cellRenderer: function(params) {
+        let gx;
+        const gridOptions = {
+            columnDefs: [
+            { headerName:"번호", field: "idx", width:100},
+            { headerName:"제목", field: "title", width:500,
+                    cellRenderer: function(params) {
+                        let modify = `<a href= /modify?idx=${params.data.idx}>${params.value}</a>`;
+                        return modify;
+                    }
+                },
+            { headerName:"작성자",field: "writer" },
+            { headerName:"등록일시",field: "rt" },
+            { headerName:"수정일시",field: "ut" },
+            // { width: "auto" },
+            ],
+
+            defaultColDef: {sortable: true, filter: true},
+
+            rowSelection: 'multiple',
+            animateRows: true,
+
+            onCellClicked: params => {
+                console.log(params.data.idx);
+            },
             
-            let modify = `<a href= /modify?idx=${params.data.idx}>${params.value}</a>`;
-            return modify;
-        }
+            onGridReady: function (event) {
+                event.api.sizeColumnsToFit();
+            }
+        };
+        const eGridDiv = document.getElementById("myGrid");
+        gx = new agGrid.Grid(eGridDiv, gridOptions);
+
+        // table_url = "http://127.0.0.1:8000/json"
+        // search_url = ""
+        // fetch(table_url)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         gridOptions.api.setRowData(data);
+        //     });
+
+        select_table();
+
+        $("[name=sel_btn]").on("click", function(e) {
+            select_table();
+        });
+
         
-    },
-           { headerName:"작성자",field: "writer" },
-           { headerName:"등록일시",field: "rt" },
-           { headerName:"수정일시",field: "ut" },
-        ],
 
-         defaultColDef: {sortable: true, filter: true},
+        function select_table() {
+            var rt = document.getElementById('datepicker').value;
+            var title = document.getElementById('title').value;
+            var writer = document.getElementById('writer').value;
 
-         rowSelection: 'multiple',
-         animateRows: true,
+            $.ajax({
+                method: "get",
+                url: "/search", 
+                data: "sel_btn=조회&rt="+rt+"&title="+title+"&writer="+writer,
+                success: function(res) {
+                    console.log(res);
+                    gx.gridOptions.api.setRowData(res.result);
+                },
+                error: function(err) {
 
-         onCellClicked: params => {
-           console.log(params.data.idx);
-           
-        },
-         
-        onGridReady: function (event) {
-
-        event.api.sizeColumnsToFit();
+                }
+            })
         }
-       };
-       const eGridDiv = document.getElementById("myGrid");
-       new agGrid.Grid(eGridDiv, gridOptions);
-
-       fetch("http://127.0.0.1:8000/json")
-       .then(response => response.json())
-       .then(data => {
-         gridOptions.api.setRowData(data);
-       });
    </script>
 
 <!-- jquery calendar -->

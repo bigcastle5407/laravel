@@ -24,8 +24,8 @@ Route::get('/json', "notice\\ntc01Controller@json");
 //검색
 Route::get('/search', "notice\\ntc01Controller@search");
 
-// 등록페이지 이동
-Route::get('/register','notice\\ntc01Controller@register_view');
+//등록페이지 이동
+Route::get('/register','notice\\ntc01Controller@registerView');
 
 //등록 데이터 전송
 Route::post('/reg_data','notice\\ntc01Controller@register');
@@ -34,5 +34,12 @@ Route::post('/reg_data','notice\\ntc01Controller@register');
 Route::post('/mod_data','notice\\ntc01Controller@modify');
 
 //수정 페이지 이동
-Route::get('/modify','notice\\ntc01Controller@modify_view');
+Route::get('/modify','notice\\ntc01Controller@modifyView');
+
+//삭제 데이터 전송
+Route::post('/del_data','notice\\ntc01Controller@del');
+
+
+
+// Route::post('post-summernote-image-upload',' notice\\ntc01Controller@store ');
 
