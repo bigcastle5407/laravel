@@ -42,7 +42,7 @@
             <input type="button" class="btn btn-danger" name="del_btn" value="삭제">
         </div>
     </form>
-            
+        <!-- {{asset('storage/file.jpg')}} -->
     
     <!-- 서머노트 -->
     <script>

@@ -68,6 +68,7 @@ class ntc01Controller extends Controller
         $writer = $request->input('writer');
         $title = $request->input('title');
         $content = $request->input('content');
+        // $request->file('content')->store('images','public');
 
         $sql = "
             insert into 
@@ -151,12 +152,18 @@ class ntc01Controller extends Controller
     }
 
 
-    public function update(Request $request)
+    // public function update(Request $request)
+    // {
+    //     $path = $request->file('content')->store('content');
+
+
+    //     return $path;
+    // }
+
+
+    public function uploadImage(Request $request)
     {
-        $path = $request->file('')->store('');
+        dd($request->file('image'));
 
-
-        return $path;
     }
-
 }

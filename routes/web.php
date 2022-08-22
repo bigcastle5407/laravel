@@ -40,3 +40,6 @@ Route::get('/modify','notice\\ntc01Controller@modifyView');
 
 //삭제 데이터 전송
 Route::post('/del_data','notice\\ntc01Controller@del');
+
+
+Route::post('/upload_img','notice\\ntc01Controller@uploadImage');

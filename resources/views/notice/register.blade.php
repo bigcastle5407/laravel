@@ -40,32 +40,44 @@
         $(document).ready(function() {
             $('#summernote').summernote({
                 height:600,
-
-                
-            });
+                callbacks: {
+                    onImageUpload: function(image) {
+                        uploadImage(image[0]);
+                    }
+            }
         });
 
+        function uploadImage(image) {
+            var data = new FormData();
+            data.append("image", image);
+            data.append('_token', "{{ csrf_token() }}");
+            $.ajax({
+                type: "post",
+                url: '/upload_img',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                header: {
+                    "Content-Type": "multipart/form-data",
+                },
+                success: function(url) {
+                    var image = $('<img>').attr('src',url);
+                    $('#summernote').summernote("insertNode", image[0]);
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
 
-        // $('#summernote').summernote({
-        //     height: 600,
-        //     lang : 'ko-KR',
-        //     callbacks: {
-        //         onImageUpload: function(image) {
-        //             var file = image[0];
-        //             var reader = new FileReader();
-        //             reader.onloadend = function() {
-        //                 var image = $('<img>').attr('src',  reader.result);
-        //                    image.attr('width','300');
-        //                    image.attr('height','300');
-        //                 $('#summernote').summernote("insertNode", image[0]);
-        //             }
-        //             reader.readAsDataURL(file);
-                
-        //       }
-        //   }
+        });
+    </script>
 
+    <script>
         
-        //  });
+
+
     </script>
 </body>
 </html>
