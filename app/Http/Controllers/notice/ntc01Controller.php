@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\notice;
 
 use App\Http\Controllers\Controller;
-use App\Post;
+use App\Models\Post;
+use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\Storage;
 
 class ntc01Controller extends Controller
 {
@@ -21,19 +23,7 @@ class ntc01Controller extends Controller
         return view("/notice/ntc01");
     }
 
-    // public function json(Request $request)
-    // {
-    //     $sql = "
-    //         select *
-    //         from notice
-    //         ";
-    //     $notice = DB::select($sql);
-        
-    //     $json = json_encode($notice, JSON_UNESCAPED_UNICODE);
-    
-    //     return $json ;
-    // }
-
+   
     // 검색
     public function search(Request $request)
     {
@@ -77,7 +67,7 @@ class ntc01Controller extends Controller
     {
         $writer = $request->input('writer');
         $title = $request->input('title');
-        $content = $request->input('editordata');
+        $content = $request->input('content');
 
         $sql = "
             insert into 
@@ -103,6 +93,8 @@ class ntc01Controller extends Controller
         $result2 = DB::selectOne($sql2);
         $values = ['result' => $result2];
         return view("/notice/modify",$values);
+
+        
     }
 
 
@@ -113,7 +105,7 @@ class ntc01Controller extends Controller
 
             $writer = $request->input('writer');
             $title = $request->input('title');
-            $content = $request->input('editordata');
+            $content = $request->input('content');
             $idx = $request->input('idx');
 
             $sql = "
@@ -158,43 +150,13 @@ class ntc01Controller extends Controller
 
     }
 
-    //이지미 업로드
-    // public function store(Request $request)
-    // {
-    //     $this->validate($request,[
-    //         'writer' => 'required',
-    //         'title' => 'required',
-    //         'editordata' => 'required',
-    //     ]);
 
-    //     $editordata = $request->editordata;
-    //     $dom = new \DOMDocument();
-    //     $dom ->loadHtml($editordata,LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-    //     $images = $dom->getElementsByTagName('img');
-    //     foreach($images as $k => $img){
-
-    //         $data = $img->getAttribute('src');
-    //         list($type, $data) = explode(';', $data);
-    //         list(, $data) = explode(',', $data);
-    //         $data = base64_decode($data);
-    //         $image_name= "/upload/" . time().$k.'.png';
-    //         $path = public_path() . $image_name;
-    //         file_put_contents($path, $data);
-    //         $img->removeAttribute('src');
-    //         $img->setAttribute('src', $image_name);
-    //     }
-
-    //     $editordata = $dom->saveHTML();
-    //     $summernote = new Post();
-    //     $summernote->writer = $request->writer;
-    //     $summernote->title = $request->title;
-    //     $summernote->editordata = $editordata;
-    //     $summernote->save();
-
-       
-    // }
+    public function update(Request $request)
+    {
+        $path = $request->file('')->store('');
 
 
-    
-    
+        return $path;
+    }
+
 }

@@ -31,7 +31,7 @@
         <br><br>
         <div style="width:80%;margin:auto;">
             <input type="text" class="form-control" name="title"><br><br><br>
-            <textarea id="summernote" name="editordata"></textarea>
+            <textarea id="summernote" name="content"></textarea>
         </div>
     </form>
 

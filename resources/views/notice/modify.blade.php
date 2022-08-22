@@ -33,7 +33,7 @@
         <br><br>
         <div style="width:80%;margin:auto;">
             <input type="text" class="form-control" name="title" value="{{$result->title}}"><br><br><br>
-            <textarea id="summernote" name="editordata">{{$result->content}}</textarea>
+            <textarea id="summernote" name="content">{{$result->content}}</textarea>
         </div>
     </form>
     <form action="" method="post">

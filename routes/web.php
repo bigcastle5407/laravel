@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +40,3 @@ Route::get('/modify','notice\\ntc01Controller@modifyView');
 
 //삭제 데이터 전송
 Route::post('/del_data','notice\\ntc01Controller@del');
-
-
-
-// Route::post('post-summernote-image-upload',' notice\\ntc01Controller@store ');
-
