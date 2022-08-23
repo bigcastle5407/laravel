@@ -11,8 +11,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
-
     <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -42,9 +40,8 @@
             <input type="button" class="btn btn-danger" name="del_btn" value="삭제">
         </div>
     </form>
-        <!-- {{asset('storage/file.jpg')}} -->
     
-    <!-- 서머노트 -->
+    <!-- summernote -->
     <script>
         $(document).ready(function() {
             $('#summernote').summernote({
@@ -57,7 +54,6 @@
        $("[name=del_btn]").on("click", function(e) {
             delete_table();
         });
-
 
         function delete_table() {
             var idx = document.getElementById('del_idx').value;
@@ -82,14 +78,10 @@
                         } else if (response.code =="500") {
                             alert(response.msg);
                         }
-                        
-                 
                     },
                     error: function(err) {
-    
                     }
                 });
-                
             } else {
                 console.log('N');
             }

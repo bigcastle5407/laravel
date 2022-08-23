@@ -90,20 +90,15 @@ class ntc01Controller extends Controller
             from notice
             where idx = $idx
         ";
-        
         $result2 = DB::selectOne($sql2);
         $values = ['result' => $result2];
         return view("/notice/modify",$values);
-
-        
     }
 
 
     //수정페이지
     public function modify(Request $request)
         {
-            $r = $request->all();
-
             $writer = $request->input('writer');
             $title = $request->input('title');
             $content = $request->input('content');
@@ -114,9 +109,7 @@ class ntc01Controller extends Controller
                 set writer='$writer', title='$title', content='$content', ut=now()
                 where idx = $idx
             ";
-            
             $result = DB::update($sql);
-
             return redirect("/");
         }
 
@@ -151,16 +144,7 @@ class ntc01Controller extends Controller
 
     }
 
-
-    // public function update(Request $request)
-    // {
-    //     $path = $request->file('content')->store('content');
-
-
-    //     return $path;
-    // }
-
-
+    //이미지 업로드
     public function uploadImage(Request $request)
     {
         // dd($request->file('image'));
@@ -173,9 +157,6 @@ class ntc01Controller extends Controller
                   $destination = 'storage/images/'.$filename;
                   $location = $_FILES["image"]["tmp_name"];
                   move_uploaded_file($location, $destination);
-                //   echo '/upload_img/'.$filename;
-                } else {
-                //   echo $message = 'Ooops!  Your upload triggered the following error:  '.$_FILES['image']['error'];
                 }
               }
             $code = 200;

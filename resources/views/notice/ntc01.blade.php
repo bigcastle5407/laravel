@@ -15,9 +15,7 @@
    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css"/>
    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css"/>
    <style>
-    .ag-header-cell-label {
-	justify-content: center;
-    }
+    .ag-header-cell-label { justify-content: center; }
    </style>
 </head>
 <body style="width:85%;margin:auto; margin-top:20px;">
@@ -43,9 +41,7 @@
     
     <!-- ag-grid -->
     <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width:auto;text-align:center;"></div>
-
-    
-    
+    <!-- ag-grid -->
     <script type="text/javascript">
         let gx;
         const gridOptions = {
@@ -60,7 +56,6 @@
             { headerName:"작성자",field: "writer" },
             { headerName:"등록일시",field: "rt" },
             { headerName:"수정일시",field: "ut" },
-            // { width: "auto" },
             ],
 
             defaultColDef: {sortable: true, filter: true},
@@ -77,17 +72,15 @@
 
             }
         };
+
         const eGridDiv = document.getElementById("myGrid");
         gx = new agGrid.Grid(eGridDiv, gridOptions);
-
 
         select_table();
 
         $("[name=sel_btn]").on("click", function(e) {
             select_table();
         });
-
-        
 
         function select_table() {
             var rt = document.getElementById('datepicker').value;

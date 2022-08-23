@@ -11,7 +11,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
     <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
@@ -35,23 +34,22 @@
         </div>
     </form>
 
-    <!-- 서머노트 -->
+    <!-- Summernote -->
     <script>
         $(document).ready(function() {
             $('#summernote').summernote({
                 height:600,
                 callbacks: {
-                    onImageUpload: function(image, editor, welEditable) {
+                    onImageUpload: function(image) {
                         uploadImage(image[0]);
                     }
                 }
             });
-
+        //이미지 업로드 기능
         function uploadImage(image) {
             var data = new FormData();
             data.append("image", image);
             data.append('_token', "{{ csrf_token() }}");
-
             
             $.ajax({
                 type: "post",
@@ -67,10 +65,10 @@
                     var image = $('<img>').attr('src',response.destination);
                     $('#summernote').summernote("insertNode", image[0]);
                     if (response.code == 200){
-                        // alert(response.msg);
+                        alert("게시물 등록에 성공하였습니다.");
 
                     }else if(response.code == 500){
-                        // alert(response.msg);
+                        alert("게시물 등록에 실패하였습니다.");
                     }
                 },
                 error: function(data) {
