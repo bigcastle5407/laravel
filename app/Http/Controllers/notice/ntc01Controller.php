@@ -163,7 +163,38 @@ class ntc01Controller extends Controller
 
     public function uploadImage(Request $request)
     {
-        dd($request->file('image'));
+        // dd($request->file('image'));
+        try {
+            if ($_FILES['image']['name']) {
+                if (!$_FILES['image']['error']) {
+                  $name = md5(rand(100, 200));
+                  $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                  $filename = $name. '.'.$ext;
+                  $destination = 'storage/images/'.$filename;
+                  $location = $_FILES["image"]["tmp_name"];
+                  move_uploaded_file($location, $destination);
+                //   echo '/upload_img/'.$filename;
+                } else {
+                //   echo $message = 'Ooops!  Your upload triggered the following error:  '.$_FILES['image']['error'];
+                }
+              }
+            $code = 200;
+            $msg = "성공!";
+        } catch (\Throwable $th) {
+            // dd($th->getMessage());
+            $code = 500;
+            $msg = "실패!";
+        }
+       return response()->json([
+            'code' => $code,
+            'msg' => $msg,
+            'destination' => $destination
+
+       ]);
+
+        
 
     }
+
+
 }

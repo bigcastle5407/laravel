@@ -41,16 +41,18 @@
             $('#summernote').summernote({
                 height:600,
                 callbacks: {
-                    onImageUpload: function(image) {
+                    onImageUpload: function(image, editor, welEditable) {
                         uploadImage(image[0]);
                     }
-            }
-        });
+                }
+            });
 
         function uploadImage(image) {
             var data = new FormData();
             data.append("image", image);
             data.append('_token', "{{ csrf_token() }}");
+
+            
             $.ajax({
                 type: "post",
                 url: '/upload_img',
@@ -61,9 +63,15 @@
                 header: {
                     "Content-Type": "multipart/form-data",
                 },
-                success: function(url) {
-                    var image = $('<img>').attr('src',url);
+                success: function(response) {
+                    var image = $('<img>').attr('src',response.destination);
                     $('#summernote').summernote("insertNode", image[0]);
+                    if (response.code == 200){
+                        // alert(response.msg);
+
+                    }else if(response.code == 500){
+                        // alert(response.msg);
+                    }
                 },
                 error: function(data) {
                     console.log(data);
