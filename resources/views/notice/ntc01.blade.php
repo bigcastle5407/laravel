@@ -46,7 +46,15 @@
         let gx;
         const gridOptions = {
             columnDefs: [
-            { headerName:"번호", field: "idx", width:100},
+            { 
+                headerName:"번호",
+                width:100,
+                // valueGetter: 'node.id',
+                // 인덱스 번호 1부터 시작하기 1번째 방법
+                cellRenderer: (params) => params.rowIndex + 1,
+                cellStyle: {"background":"#F5F7F7"}
+            },
+
             { headerName:"제목", field: "title", width:500,
                     cellRenderer: function(params) {
                         let modify = `<a href= /modify?idx=${params.data.idx}>${params.value}</a>`;
@@ -55,7 +63,7 @@
                 },
             { headerName:"작성자",field: "writer" },
             { headerName:"등록일시",field: "rt" },
-            { headerName:"수정일시",field: "ut" },
+            { headerName:"수정일시",field: "ut" }
             ],
 
             defaultColDef: {sortable: true, filter: true},
@@ -64,13 +72,22 @@
             animateRows: true,
 
             onCellClicked: params => {
+                console.log(params);
                 console.log(params.data.idx);
             },
             
             onGridReady: function (params) {
                 params.api.sizeColumnsToFit();
 
-            }
+            },
+            //인덱스 번호 1부터 시작하기 2번째 방법
+            // components: {
+            //     loadingRenderer: function(params) {
+            //         if(params.value !== undefined) {
+            //             return params.node.rowIndex + 1;
+            //         }
+            //     }
+            // }
         };
 
         const eGridDiv = document.getElementById("myGrid");

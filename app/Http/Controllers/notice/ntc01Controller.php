@@ -147,10 +147,20 @@ class ntc01Controller extends Controller
     //이미지 업로드
     public function uploadImage(Request $request)
     {
-        // dd($request->file('image'));
         try {
+
+            // if(!Storage::exists('storage/images')) {
+            //     Storage::makeDirectory('storage/images');
+            // }
+
+            
+            // Storage::disk('local')->put('/images', base64_decode($request->file('image')));
+
+
             if ($_FILES['image']['name']) {
                 if (!$_FILES['image']['error']) {
+
+                    
                   $name = md5(rand(100, 200));
                   $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
                   $filename = $name. '.'.$ext;
